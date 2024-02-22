@@ -1,0 +1,16 @@
+.customForm {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 400px;
+    margin: auto;
+    background-color: white;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px 0px;
+    padding: 24px 56px;
+
+    h2 {
+        margin-top: 0;
+        margin-bottom: 10px;
+        align-self: center;
+    }
+}

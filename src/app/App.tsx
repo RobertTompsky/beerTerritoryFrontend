@@ -1,10 +1,10 @@
-import { Header } from '../widgets/Header/Header'
-import './App.css'
+import { Header } from '../layout/Header/Header'
+import styles from './App.module.scss'
 import { AppRouter } from './AppRouter'
 
 function App() {
   return (
-    <div>
+    <div className={styles.app}>
       <Header />
       <AppRouter />
     </div>

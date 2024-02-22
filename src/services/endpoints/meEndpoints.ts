@@ -26,7 +26,7 @@ export const listEndpoints = api.injectEndpoints({
         editProfile: builder.mutation<Profile, EditedProfileBody>({
             query: (body) => ({
                 url: '/users/me/update_profile',
-                method: "POST",
+                method: "PATCH",
                 body
             }),
             invalidatesTags: ['Users']

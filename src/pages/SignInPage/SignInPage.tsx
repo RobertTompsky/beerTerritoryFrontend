@@ -4,6 +4,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../services/endpoints/authEndpoints';
 import { RoutePath } from '../../config/routeConfig';
 import { UserLoginData } from '../../types/userTypes';
+import { Container } from '../../components';
+import { CustomForm } from '../../components/custom/CustomForm/CustomForm';
+import { CustomInput } from '../../components/custom/CustomInput/CustomInput';
+import styles from './SignInPage.module.scss'
 
 export const SignInPage = () => {
     const navigate = useNavigate()
@@ -14,8 +18,8 @@ export const SignInPage = () => {
     })
 
     const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-        const {name, value} = e.target
-        setLoginData({...loginData, [name]: value})
+        const { name, value } = e.target
+        setLoginData({ ...loginData, [name]: value })
     }
 
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
@@ -29,13 +33,32 @@ export const SignInPage = () => {
 
     }
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <input name='nickName' value={loginData.nickName} onChange={handleInputChange}/>
-                <input name='password' value={loginData.password} onChange={handleInputChange}/>
-                <CustomButton children='OK'/>
-                <div>Нет аккаунта? <Link to={`${RoutePath.sign_up}`}>Зарегистрироваться</Link></div>
-            </form>
+        <div className={styles.signInPage}>
+        <Container>
+                <CustomForm
+                    onSubmit={handleSubmit}
+                    title='Вход'>
+                    <CustomInput
+                        name='nickName'
+                        value={loginData.nickName}
+                        placeholder='Введите никнейм пользователя'
+                        onChange={handleInputChange}
+                    />
+                    <CustomInput
+                        name='password'
+                        value={loginData.password}
+                        onChange={handleInputChange}
+                        placeholder='Введите пароль'
+                    />
+                    <CustomButton children='Войти' />
+                    <div>
+                        Нет аккаунта? 
+                        <Link to={`${RoutePath.sign_up}`}>
+                            Зарегистрироваться
+                        </Link>
+                    </div>
+                </CustomForm>
+        </Container>
         </div>
     );
 };

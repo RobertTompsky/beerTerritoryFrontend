@@ -1,18 +1,18 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetUserQuery } from '../../services/endpoints/listEndpoints';
-import Profile from '../../components/Profile/Profile';
-import AddProfileForm from '../../components/ProfileForm/AddProfileForm/AddProfileForm';
+import {ProfileInfo} from '../../components/Profile/ProfileInfo';
+import { Container } from '../../components';
+import { EditProfileBlock } from '../../components/blockComponents/EditProfileBlock/EditProfileBlock';
 
 export const ProfilePage = () => {
-    const {id} = useParams()
-    const {data: user} = useGetUserQuery(id as string)
-    
+    const { id } = useParams()
+    const { data: user } = useGetUserQuery(id as string)
+
     return (
-        <div>
-            <div>Страница профиля {user?.nickName} {id}</div>
-            <Profile user={user}/>
-            <AddProfileForm />
-        </div>
+        <Container>
+            <ProfileInfo user={user} />
+            <EditProfileBlock user={user}/>
+        </Container>
     );
 };

@@ -11,6 +11,8 @@ export type UserWithToken = Omit<UserRegistrationData, 'password' | 'email'> & {
     token: string; 
 };
 
+export type ValidUserFieldNames = 'nickName' | 'email' | 'password'
+
 export type Profile = {
     id: string
     realName: string,
@@ -21,7 +23,7 @@ export type Profile = {
 
 export type ProfileBody = Omit<Profile, 'id'>
 
-export type EditedProfileBody = Partial<Profile> & Pick<Profile, 'id'>
+export type EditedProfileBody = Partial<Profile>
 
 export type ProfileInputData = Omit<Profile, 'avatar' | 'id'>
 

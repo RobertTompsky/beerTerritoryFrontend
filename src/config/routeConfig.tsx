@@ -3,24 +3,27 @@ import {
     MainPage, 
     SignUpPage, 
     SignInPage,
-    ProfilePage 
+    ProfilePage, 
+    AddBeerPage
 } from "../pages"
 
 export enum AppRoutes {
     SIGN_UP = 'sign_up',
     SIGN_IN = 'sign_in',
     MAIN = 'main',
-    PROFILE = 'profile'
+    PROFILE = 'profile',
+    ADDBEER = 'add_beer'
 }
 
 export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.SIGN_UP]: '/sign_up',
     [AppRoutes.SIGN_IN]: '/sign_in',
     [AppRoutes.MAIN]: '/',
-    [AppRoutes.PROFILE]: '/profile'
+    [AppRoutes.PROFILE]: '/profile',
+    [AppRoutes.ADDBEER]: '/add_beer'
 }
 
-export const RouteConfig: Record<string,RouteProps> = {
+export const RouteConfig: Record<AppRoutes, RouteProps> = {
     [AppRoutes.SIGN_UP]: {
         path: RoutePath.sign_up,
         element: <SignUpPage />
@@ -36,6 +39,10 @@ export const RouteConfig: Record<string,RouteProps> = {
     [AppRoutes.PROFILE]: {
         path: `${RoutePath.profile}/:id`,
         element: <ProfilePage />
+    },
+    [AppRoutes.ADDBEER]: {
+        path: RoutePath.add_beer,
+        element: <AddBeerPage />
     }
 }
 
