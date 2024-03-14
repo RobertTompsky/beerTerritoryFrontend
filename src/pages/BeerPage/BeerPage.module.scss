@@ -1,0 +1,16 @@
+.beerPage {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+
+    .reviewsSection {
+        width: 700px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    h2 {
+        margin: 0;
+    }
+}

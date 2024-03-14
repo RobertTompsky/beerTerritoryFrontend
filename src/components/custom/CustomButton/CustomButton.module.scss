@@ -15,6 +15,11 @@
         box-shadow: 0 0 0 0 #fff, 0 0 0 3px #1de9b6;
     }
 
+    &:disabled {
+        opacity: 0.5;
+        box-shadow: none;
+    }
+
 }
 
 .approve {
@@ -26,7 +31,6 @@
     border-radius: 3px;
     padding: 12px 24px;
     border: 0;
-    color: #000021;
     background: #1de9b6;
     line-height: 1.15;
     font-size: 16px;

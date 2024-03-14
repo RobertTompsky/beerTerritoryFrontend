@@ -1,25 +1,28 @@
-import React from 'react';
 import { Container } from '../../components';
 import styles from './Header.module.scss'
 import { Link } from 'react-router-dom';
-import { RoutePath } from '../../config/routeConfig';
-import { useAppSelector } from '../../hooks/reduxHooks';
-import LOGO from '../../assets/beerbee.png'
+import ProfileIcon from '@/assets/profileIcon.svg'
+import React, { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
+import { RoutePath } from '@/lib/config/routeConfig';
+import { logOut } from '@/features/authSlice';
+import { CustomButton } from '@/components/custom';
+import LittleProfileIcon from '@/assets/profileLittleIcon.svg'
 
-export const Header = () => {
-    const myId = useAppSelector((state) => state.auth.user?.id)
+export const Header: React.FC = () => {
+    const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
+    const dispatch = useAppDispatch()
+    const me = useAppSelector((state) => state.auth.user)
 
     return (
         <div className={styles.header}>
             <Container>
                 <div className={styles.header_content}>
+
                     <div className={styles.header_logoWrapper}>
-                        <img 
-                        className={styles.header_logo} 
-                        src={LOGO} 
-                        />
-                        <span className={styles.header_title}>BeerBee</span>
+                        <span className={styles.header_title}>FLEXBEER</span>
                     </div>
+
                     <nav className={styles.header_nav}>
                         <Link
                             to={RoutePath.main}
@@ -31,12 +34,41 @@ export const Header = () => {
                             className={styles.header_link}>
                             Добавить пиво
                         </Link>
-                        <Link
-                            to={`${RoutePath.profile}/${myId}`}
-                            className={styles.header_link}>
-                            Мой профиль
-                        </Link>
                     </nav>
+
+                    {me && <div className={styles.header_content_profile}>
+
+                        <div
+                            className={styles.header_profileIconWrapper}
+                            onClick={() => setIsMenuOpen(prev => !prev)}>
+                            <img
+                                src={ProfileIcon}
+                                width={50}
+                                height={50}
+                            />
+                        </div>
+
+                        {isMenuOpen &&
+                            <div className={styles.header_dropdown}>
+                                <Link
+                                    to={`${RoutePath.profile}/${me?.id}`}
+                                    onClick={() => setIsMenuOpen(false)}
+                                    className={styles.header_dropdown_link}>
+                                    <img src={LittleProfileIcon} width={14} height={14} />
+                                    <p>Профиль</p>
+                                </Link>
+                                <CustomButton
+                                    children='Выйти'
+                                    variant='delete'
+                                    onClick={() => {
+                                        dispatch(logOut())
+                                        setIsMenuOpen(false)
+                                    }}
+                                />
+                            </div>}
+
+                    </div>}
+
                 </div>
             </Container>
         </div>

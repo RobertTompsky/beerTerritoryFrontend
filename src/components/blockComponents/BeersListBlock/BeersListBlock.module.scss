@@ -1,0 +1,29 @@
+.beersListBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    h3 {
+        margin: 0;
+    }
+
+    &_bars {
+        display: grid;
+        grid-template-columns: 2fr 2fr 1fr;
+        gap: 30px;
+
+        &_typeSelect {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+        }
+    }
+
+    &_list {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+}

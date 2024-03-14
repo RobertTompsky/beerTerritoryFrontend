@@ -1,11 +1,15 @@
 import React from 'react';
-import { CustomButton } from '../../components/custom/CustomButton/CustomButton';
+import { Container } from '@/components';
+import { BeersListBlock } from '@/components/blockComponents/BeersListBlock/BeersListBlock';
 
 export const MainPage = () => {
     return (
         <div>
-            MainPage
-            <CustomButton children='ffsfs' variant='delete' style={{ width: '200px' }}/>
+            <Container>
+                <div>
+                    <BeersListBlock />
+                </div>
+            </Container>
         </div>
     );
 };

@@ -1,0 +1,12 @@
+
+.reviewsBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .reviewsList {
+        @extend .reviewsBlock;
+        max-height: 600px;
+        overflow-y: scroll;
+    }
+}

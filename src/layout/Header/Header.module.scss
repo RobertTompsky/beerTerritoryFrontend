@@ -1,6 +1,5 @@
 .header {
-    background-color: #ffd600;
-    height: 90px;
+    background-color:#181818;
 
     .header_content {
         display: flex;
@@ -21,6 +20,7 @@
             .header_title {
                 font-size: 28px;
                 font-weight: 800;
+                color: white;
             }
         }
 
@@ -31,10 +31,56 @@
             .header_link {
                 text-decoration: none;
                 font-size: larger;
-                color: #000a47;
+                color: white;
 
                 &:hover {
                     opacity: 0.8;
+                }
+            }
+        }
+
+        .header_content_profile {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+
+            .header_profileIconWrapper {
+                cursor: pointer;
+    
+                &:hover {
+                    opacity: 0.8;
+                }
+            }
+            
+            .header_dropdown {
+                position: absolute;
+                right: 25px;
+                top: 55px;
+                width: 110px;
+                background-color: white;
+                padding: 20px;
+                border-radius: 10px 0 10px 10px;
+                box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px 0px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                z-index: 10;
+
+                &_link {
+                    text-decoration: none;
+                    color: black;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 6px;
+
+                    &:hover {
+                        opacity: 0.8;
+                    }
+
+                    P {
+                        margin: 0;
+                    }
                 }
             }
         }

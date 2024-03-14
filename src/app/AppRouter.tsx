@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { RouteConfig, RoutePath } from '../config/routeConfig';
+import { RouteConfig, RoutePath } from '../lib/config/routeConfig';
 import { SignInPage, SignUpPage } from '../pages';
 import { useAppSelector } from '../hooks/reduxHooks';
 

@@ -1,22 +1,30 @@
 .customInput {
-    font-size: 18px;
-    border-radius: 6px;
-    line-height: 1.5;
-    padding: 5px 10px;
-    transition: box-shadow 100ms ease-in, border 100ms ease-in, background-color 100ms ease-in;
-    border: 2px solid #dee1e2;
-    color: rgb(14, 14, 16);
-    background: #dee1e2;
-    display: block;
-    height: 36px;
+    box-sizing: border-box;
+    box-shadow: inset #abacaf 0 0 0 2px;
+    border: 0;
+    background: rgba(0, 0, 0, 0);
+    width: 100%;
+    position: relative;
+    border-radius: 3px;
+    padding: 12px 12px;
+    line-height: 1.4;
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+    font-weight: 400;
+    transition: all .2s ease;
 
-    &:hover {
-        border-color: #ccc;
+    &:hover{
+        box-shadow: 0 0 0 0 #fff inset, #1de9b6 0 0 0 2px;
     }
     
     &:focus{
-        border-color: #9147ff;
         background: #fff;
+        outline: 0;
+        box-shadow: 0 0 0 0 #fff inset, #1de9b6 0 0 0 3px;
     }
-    
+
+}
+
+input[type="file"] {
+    display: none;
 }

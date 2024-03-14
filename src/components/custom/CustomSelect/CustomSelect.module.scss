@@ -1,0 +1,33 @@
+.customSelect {
+    box-sizing: border-box;
+    box-shadow: inset #abacaf 0 0 0 2px;
+    border: 0;
+    background: rgba(0, 0, 0, 0);
+    width: 100%;
+    position: relative;
+    border-radius: 3px;
+    padding: 12px 12px;
+    line-height: 1.4;
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+    font-weight: 400;
+    appearance: none;
+    background-image: url('../../../assets/arrow_down.png');
+    background-size: 15px 15px;
+    background-repeat: no-repeat;
+    background-position: 95% 50%;
+
+    &:hover{
+        box-shadow: 0 0 0 0 #fff inset, #1de9b6 0 0 0 2px;
+    }
+    
+    &:focus{
+        background: #fff;
+        outline: 0;
+        box-shadow: 0 0 0 0 #fff inset, #1de9b6 0 0 0 3px;
+        background-image: url('../../../assets/arrow_down.png');
+        background-size: 15px 15px;
+        background-repeat: no-repeat;
+        background-position: 95% 50%;
+    }
+}

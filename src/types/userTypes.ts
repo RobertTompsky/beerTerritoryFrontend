@@ -1,3 +1,5 @@
+import { Beer } from "./beerTypes";
+
 export type UserRegistrationData = {
     nickName: string;
     email: string;
@@ -10,6 +12,8 @@ export type UserWithToken = Omit<UserRegistrationData, 'password' | 'email'> & {
     id: string; 
     token: string; 
 };
+
+export type UserIdAndNick = Omit<UserWithToken, 'token'>
 
 export type ValidUserFieldNames = 'nickName' | 'email' | 'password'
 
@@ -30,4 +34,5 @@ export type ProfileInputData = Omit<Profile, 'avatar' | 'id'>
 export type UserWithProfile = Omit<UserRegistrationData, 'password' | 'email'> & {
     id: string
     profile?: Profile
+    favouriteBeers: Beer[]
 }
