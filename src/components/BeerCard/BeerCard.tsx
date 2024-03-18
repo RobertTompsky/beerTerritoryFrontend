@@ -1,4 +1,4 @@
-import { Beer } from '@/types/beerTypes';
+import { Beer } from '@/lib/types/beerTypes';
 import React from 'react';
 import styles from './BeerCard.module.scss'
 import DefaultBeerImg from '@/assets/beerjpg.jpg'

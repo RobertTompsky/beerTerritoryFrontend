@@ -1,0 +1,17 @@
+.formField {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
+
+    label {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    span {
+        color: #ff5000;
+        position: absolute;
+        top: 72px;
+    }
+}

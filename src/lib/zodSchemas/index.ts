@@ -30,8 +30,9 @@ export const beerSchema = z.object({
     name: z.string().min(1, 'Обязательное поле'),
     brewery: z.string().min(1, 'Обязательное поле'),
     type: z.string().min(1, 'Обязательное поле'),
-    abv: z.number().min(0, 'Abv не может быть отрицательным').max(100),
-    volume: z.number(),
+    abv: z.number({ invalid_type_error: "Поле не заполнено/неверный формат данных" })
+        .min(0, 'Abv не может быть отрицательным').max(100),
+    volume: z.number({ invalid_type_error: "Обязательное поле" }),
     image: z.string().optional()
 })
 

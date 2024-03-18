@@ -4,8 +4,8 @@ export type BeerBody = {
     name: string
     brewery: string
     type: string
-    abv: number
-    volume: number
+    abv: number | ''
+    volume: number | ''
     image?: string
 }
 

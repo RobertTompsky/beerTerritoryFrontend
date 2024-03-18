@@ -1,5 +1,5 @@
-import { UploadResponseData } from "../../types/imageTypes";
-import { api } from "../api";
+import { UploadResponseData } from "@/lib/types/imageTypes"
+import { api } from "@/services/api"
 
 export const imagesEndpoints = api.injectEndpoints({
     endpoints: (builder) => ({

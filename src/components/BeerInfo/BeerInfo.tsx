@@ -5,7 +5,7 @@ import DefaultBeerImg from '@/assets/beerjpg.jpg'
 import { CustomButton } from '../custom';
 import { useNavigate } from 'react-router-dom';
 import { RoutePath } from '@/lib/config/routeConfig';
-import { useAppSelector } from '@/hooks/reduxHooks';
+import { useAppSelector } from '@/lib/hooks/reduxHooks';
 import {
     useAddBeerToFavMutation,
     useDeleteBeerMutation,

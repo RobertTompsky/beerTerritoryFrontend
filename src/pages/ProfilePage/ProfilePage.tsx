@@ -1,8 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { UserWithProfile } from '@/types/userTypes';
+import { UserWithProfile } from '@/lib/types/userTypes';
 import { ProfileInfoBlock } from '@/components/blockComponents';
-import { useGetUserQuery } from '@/services/endpoints/listEndpoints';
+import { useGetUserQuery } from '@/services/endpoints/users/listEndpoints';
 import { Container } from '@/layout';
 import { FriendsList } from '@/components';
 import styles from './ProfilePage.module.scss'

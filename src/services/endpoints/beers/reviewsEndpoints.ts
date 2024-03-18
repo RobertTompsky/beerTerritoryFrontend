@@ -1,5 +1,5 @@
 import { api } from "@/services/api";
-import { Review, ReviewBody } from "@/types/reviewTypes";
+import { Review, ReviewBody } from "@/lib/types/reviewTypes";
 
 export const reviewsEndpoints = api.injectEndpoints({
     endpoints: (builder) => ({

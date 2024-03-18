@@ -1,5 +1,5 @@
 import { api } from "@/services/api";
-import { SearchBeerResult } from "@/types/beerTypes";
+import { SearchBeerResult } from "@/lib/types/beerTypes";
 
 export const searchEndpoints = api.injectEndpoints({
     endpoints: (builder) => ({

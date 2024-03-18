@@ -1,4 +1,4 @@
-import { Header } from '../layout/Header/Header'
+import { Header } from '@/layout'
 import styles from './App.module.scss'
 import { AppRouter } from './AppRouter'
 

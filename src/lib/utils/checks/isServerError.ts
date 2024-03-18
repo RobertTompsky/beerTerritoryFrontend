@@ -1,4 +1,4 @@
-import { ServerError } from "@/types/otherTypes"
+import { ServerError } from "@/lib/types/otherTypes"
 
 export const isServerError = (error: unknown): error is ServerError => {
     return (

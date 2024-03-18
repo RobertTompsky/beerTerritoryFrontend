@@ -1,6 +1,6 @@
 import { api } from "@/services/api";
-import { Beer } from "@/types/beerTypes";
-import { QueryType } from "@/types/otherTypes";
+import { Beer } from "@/lib/types/beerTypes";
+import { QueryType } from "@/lib/types/otherTypes";
 
 export const beerListEndpoints = api.injectEndpoints({
     endpoints: (builder) => ({

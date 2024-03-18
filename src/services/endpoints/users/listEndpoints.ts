@@ -1,5 +1,5 @@
-import { UserWithProfile } from "../../types/userTypes";
-import { api } from "../api";
+import { UserWithProfile } from "@/lib/types/userTypes"
+import { api } from "@/services/api"
 
 export const listEndpoints = api.injectEndpoints({
     endpoints: (builder) => ({

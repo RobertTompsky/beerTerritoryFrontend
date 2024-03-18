@@ -1,7 +1,7 @@
 import React from 'react';
-import { Container } from '../../components';
 import styles from './SignUpPage.module.scss'
 import { SignUpForm } from '@/components/Forms';
+import { Container } from '@/layout';
 
 export const SignUpPage: React.FC = () => {
     return (

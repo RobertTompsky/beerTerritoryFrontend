@@ -2,20 +2,28 @@ import {
     CustomForm,
     CustomInput,
     CustomButton,
-    CustomSelect,
-    CustomFileLabel
+    CustomFileLabel,
+    CustomFormField
 } from '@/components/custom';
 import { RoutePath } from '@/lib/config/routeConfig';
 import { BEER_TYPES, VOLUME_OPTIONS } from '@/lib/data';
-import { handleZodErrors, handleServerErrors } from '@/lib/utils/functions';
+import {
+    handleZodErrors,
+    handleServerErrors,
+    handleDataChange,
+    handleValidateData,
+    handleFileChange
+} from '@/lib/utils/functions';
 import { beerSchema } from '@/lib/zodSchemas';
-import { useAddBeerMutation, useEditBeerMutation } from '@/services/endpoints/beers/manageBeerEndpoints';
-import { useUploadImageMutation } from '@/services/endpoints/imagesEndpoints';
-import { Beer, BeerInputData } from '@/types/beerTypes';
-import { UploadResponseData } from '@/types/imageTypes';
+import {
+    useAddBeerMutation,
+    useEditBeerMutation
+} from '@/services/endpoints/beers/manageBeerEndpoints';
+import { useUploadImageMutation } from '@/services/endpoints/images/imagesEndpoints';
+import { Beer, BeerInputData } from '@/lib/types/beerTypes';
+import { UploadResponseData } from '@/lib/types/imageTypes';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './BeerForm.module.scss'
 
 interface BeerFormProps {
     beer?: Beer
@@ -24,7 +32,7 @@ interface BeerFormProps {
 export const BeerForm: React.FC<BeerFormProps> = ({ beer }) => {
     const [addBeer] = useAddBeerMutation()
     const [editBeer] = useEditBeerMutation()
-    const [uploadImage, {isLoading}] = useUploadImageMutation()
+    const [uploadImage, { isLoading }] = useUploadImageMutation()
 
     const navigate = useNavigate()
 
@@ -32,29 +40,18 @@ export const BeerForm: React.FC<BeerFormProps> = ({ beer }) => {
         name: beer?.name || '',
         brewery: beer?.brewery || '',
         type: beer?.type || '',
-        abv: beer?.abv || 0,
-        volume: beer?.volume || VOLUME_OPTIONS[0]
+        abv: beer?.abv || '',
+        volume: beer?.volume || ''
     })
     const [image, setImage] = useState<File | Blob | undefined>(undefined)
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
-    const handleInputChange: React.ChangeEventHandler<HTMLInputElement | HTMLSelectElement> = (e) => {
-        const { name, value } = e.target
-        const strOrNumValue = Number(value) || value
-        setBeerData({ ...beerData, [name]: strOrNumValue })
-    }
-
-    const handleImageChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-        if (e.target.files) {
-            setImage(e.target.files[0])
-        }
-    }
 
     const handleFormSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault()
         const formData = new FormData()
         try {
-            beerSchema.parse(beerData)
+            handleValidateData(beerSchema, beerData)
+
             if (image) {
                 formData.append('avatar', image)
                 const uploadResponse = await uploadImage(formData)
@@ -63,19 +60,22 @@ export const BeerForm: React.FC<BeerFormProps> = ({ beer }) => {
 
                 if (beer?.id) {
                     await editBeer({ ...beerWithImage, id: beer.id }).unwrap()
+                    navigate(`${RoutePath.beer}/${beer?.id}`)
                 } else {
-                    await addBeer(beerWithImage).unwrap()
+                    const response = await addBeer(beerWithImage).unwrap()
+                    navigate(`${RoutePath.beer}/${response.id}`)
                 }
             } else {
                 const beerWithoutImage = { ...beerData, image: beer?.image || '' };
 
                 if (beer?.id) {
                     await editBeer({ ...beerWithoutImage, id: beer.id }).unwrap()
+                    navigate(`${RoutePath.beer}/${beer?.id}`)
                 } else {
-                    await addBeer(beerWithoutImage).unwrap()
+                    const response = await addBeer(beerWithoutImage).unwrap()
+                    navigate(`${RoutePath.beer}/${response.id}`)
                 }
             }
-            navigate(`${RoutePath.beer}/${beer?.id}`)
         } catch (error) {
             handleZodErrors(error, setErrors)
             handleServerErrors(error, setErrors)
@@ -85,32 +85,36 @@ export const BeerForm: React.FC<BeerFormProps> = ({ beer }) => {
 
     return (
         <CustomForm
-            title={beer ? 'Редактирование пива' : 'Добавление нового пива'}
+            title={
+                beer
+                    ? 'Редактирование пива'
+                    : 'Добавление нового пива'
+            }
             onSubmit={handleFormSubmit}
         >
-            <label htmlFor='name'>Название</label>
-            <CustomInput
-                id='name'
+            <CustomFormField
+                fieldType='input'
+                title='Название'
                 name='name'
                 value={beerData.name}
                 placeholder='Название...'
-                onChange={handleInputChange}
+                onChange={(e) => handleDataChange(e, setBeerData)}
+                zodError={errors.name}
             />
-            {errors.name && <span>{errors.name}</span>}
 
-            <label htmlFor='brewery'>Пивоварня</label>
-            <CustomInput
-                id='brewery'
+            <CustomFormField
+                fieldType='input'
+                title='Пивоварня'
                 name='brewery'
                 value={beerData.brewery}
                 placeholder='Пивоварня...'
-                onChange={handleInputChange}
+                onChange={(e) => handleDataChange(e, setBeerData)}
+                zodError={errors.brewery}
             />
-            {errors.brewery && <span>{errors.brewery}</span>}
 
-            <label htmlFor='type'>Сорт</label>
-            <CustomSelect
-                id='type'
+            <CustomFormField
+                fieldType='select'
+                title='Сорт'
                 name='type'
                 value={beerData.type}
                 options={BEER_TYPES.map((type) => ({
@@ -118,23 +122,23 @@ export const BeerForm: React.FC<BeerFormProps> = ({ beer }) => {
                     value: type
                 }))}
                 defaultOptionTitle='Выбрать сорт пива'
-                onChange={handleInputChange}
+                onChange={(e) => handleDataChange(e, setBeerData)}
+                zodError={errors.type}
             />
-            {errors.type && <span>{errors.type}</span>}
 
-            <label htmlFor='abv'>Алкоголь, %</label>
-            <CustomInput
-                id='abv'
+            <CustomFormField
+                fieldType='input'
+                title='Алкоголь, %'
                 name='abv'
                 value={beerData.abv}
                 placeholder='Алкоголь...'
-                onChange={handleInputChange}
+                onChange={(e) => handleDataChange(e, setBeerData)}
+                zodError={errors.abv}
             />
-            {errors.abv && <span>{errors.abv}</span>}
 
-            <label htmlFor='volume'>Объем, л.</label>
-            <CustomSelect
-                id='volume'
+            <CustomFormField
+                fieldType='select'
+                title='Объем, л.'
                 name='volume'
                 options={VOLUME_OPTIONS.map((option) => ({
                     value: option,
@@ -142,23 +146,27 @@ export const BeerForm: React.FC<BeerFormProps> = ({ beer }) => {
                 }))}
                 defaultOptionTitle='Выбрать объем'
                 value={beerData.volume}
-                onChange={handleInputChange}
+                onChange={(e) => handleDataChange(e, setBeerData)}
+                zodError={errors.volume}
             />
-            {errors.volume && <span>{errors.volume}</span>}
 
-            <CustomFileLabel title='Выберите файл' htmlFor='beerFile'/>
+            <CustomFileLabel title='Выберите файл' htmlFor='beerFile' />
             <CustomInput
                 id='beerFile'
                 type="file"
                 accept="image/*"
-                onChange={handleImageChange}
+                onChange={(e) => handleFileChange(setImage)(e)}
             />
 
             <CustomButton
                 children={beer ? 'Изменить' : 'Добавить'}
             />
             {isLoading && <div>Ожидание...</div>}
-            {errors.serverErr && <span>{errors.serverErr}</span>}
+            {errors.serverErr &&
+                <span>
+                    {errors.serverErr}
+                </span>
+            }
         </CustomForm>
     );
 };

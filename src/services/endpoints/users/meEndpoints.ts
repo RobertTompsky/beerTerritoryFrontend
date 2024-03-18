@@ -1,10 +1,11 @@
-import {
-    EditedProfileBody,
-    Profile,
-    ProfileBody,
-    UserWithProfile
-} from "../../types/userTypes";
-import { api } from "../api";
+import { 
+    UserWithProfile, 
+    Profile, 
+    ProfileBody, 
+    EditedProfileBody 
+} from "@/lib/types/userTypes"
+import { api } from "@/services/api"
+
 
 export const listEndpoints = api.injectEndpoints({
     endpoints: (builder) => ({

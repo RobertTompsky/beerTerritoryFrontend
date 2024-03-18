@@ -2,12 +2,12 @@ import { BeerCard } from '@/components/BeerCard/BeerCard';
 import { useGetBeersQuery } from '@/services/endpoints/beers/beerListEndpoints';
 import React, { useState } from 'react';
 import styles from './BeersListBlock.module.scss'
-import { QueryType } from '@/types/otherTypes';
+import { QueryType } from '@/lib/types/otherTypes';
 import { Pagination } from '@/components';
 import { CustomButton, CustomSelect } from '@/components/custom';
 import { BEER_TYPES, SORT_OPTIONS } from '@/lib/data';
 import { SearchBlock } from '..';
-import { Beer } from '@/types/beerTypes';
+import { Beer } from '@/lib/types/beerTypes';
 
 export const BeersListBlock: React.FC = () => {
     const [query, setQuery] = useState<QueryType>({
@@ -16,17 +16,8 @@ export const BeersListBlock: React.FC = () => {
         type: '',
         sort: ''
     })
-    const { data: AllBeers } = useGetBeersQuery({
-        type: '',
-        sort: '',
-        page: 1,
-        per_page: 228
-    }) as { data: Beer[] }
     const { data: beers } = useGetBeersQuery(query) as { data: Beer[] }
 
-
-    console.log(beers?.length)
-    console.log(query)
     return (
         <section className={styles.beersListBlock}>
 
@@ -95,18 +86,11 @@ export const BeersListBlock: React.FC = () => {
                     </nav>
                     : <h3>Список пива пуст</h3>
             }
-
-            {
-                AllBeers &&
-                beers &&
-                query &&
-                query.per_page &&
-                AllBeers.length > query.per_page &&
-                <Pagination
-                    query={query}
-                    setQuery={setQuery}
-                />
-            }
+            <Pagination
+                query={query}
+                setQuery={setQuery}
+                beers={beers}
+            />
         </section>
     );
 };

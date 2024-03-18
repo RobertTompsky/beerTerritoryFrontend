@@ -1,8 +1,8 @@
+import { BeersListBlock } from '@/components/blockComponents';
+import { Container } from '@/layout';
 import React from 'react';
-import { Container } from '@/components';
-import { BeersListBlock } from '@/components/blockComponents/BeersListBlock/BeersListBlock';
 
-export const MainPage = () => {
+export const MainPage: React.FC = () => {
     return (
         <div>
             <Container>

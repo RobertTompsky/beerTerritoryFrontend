@@ -1,11 +1,11 @@
-import { BeerInfo, Container } from '@/components';
+import { BeerInfo } from '@/components';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './BeerPage.module.scss'
 import { ReviewsBlock } from '@/components/blockComponents';
+import { Container } from '@/layout';
 
-
-export const BeerPage = () => {
+export const BeerPage: React.FC = () => {
     const { beerId } = useParams()
     
     return (

@@ -1,15 +1,24 @@
-import { CustomForm, CustomInput, CustomButton } from '@/components/custom';
+import {
+    CustomForm,
+    CustomButton,
+    CustomFormField
+} from '@/components/custom';
 import { RoutePath } from '@/lib/config/routeConfig';
-import { handleZodErrors, handleServerErrors } from '@/lib/utils/functions';
+import {
+    handleZodErrors,
+    handleServerErrors,
+    handleDataChange,
+    handleValidateData
+} from '@/lib/utils/functions';
 import { registerSchema } from '@/lib/zodSchemas';
-import { useRegisterMutation } from '@/services/endpoints/authEndpoints';
-import { UserRegistrationData } from '@/types/userTypes';
+import { useRegisterMutation } from '@/services/endpoints/users/authEndpoints';
+import { UserRegistrationData } from '@/lib/types/userTypes';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 export const SignUpForm: React.FC = () => {
     const navigate = useNavigate()
-    const [register, {isLoading}] = useRegisterMutation()
+    const [register, { isLoading }] = useRegisterMutation()
     const [registrationData, setRegistrationData] = useState<UserRegistrationData>({
         nickName: '',
         email: '',
@@ -17,15 +26,11 @@ export const SignUpForm: React.FC = () => {
     })
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-    const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-        const { name, value } = e.target
-        setRegistrationData({ ...registrationData, [name]: value })
-    }
-
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault()
         try {
-            registerSchema.parse(registrationData)
+            handleValidateData(registerSchema, registrationData)
+            
             const response = await register(registrationData).unwrap()
             navigate(`${RoutePath.profile}/${response.id}`)
         } catch (error) {
@@ -40,32 +45,35 @@ export const SignUpForm: React.FC = () => {
             onSubmit={handleSubmit}
             title='Регистрация'>
 
-            <label htmlFor='nickName'>Никнейм</label>
-            <CustomInput
-                id='nickName'
+            <CustomFormField
+                title='Никнейм'
+                fieldType='input'
                 name='nickName'
-                placeholder='Введите никнейм пользователя'
                 value={registrationData.nickName}
-                onChange={handleInputChange} />
-            {errors.nickName && <span>{errors.nickName}</span>}
+                onChange={(e) => handleDataChange(e, setRegistrationData)}
+                placeholder='Введите никнейм пользователя...'
+                zodError={errors.nickName}
+            />
 
-            <label htmlFor='email'>Email</label>
-            <CustomInput
-                id='email'
+            <CustomFormField
+                title='Email'
+                fieldType='input'
                 name='email'
-                placeholder='Введите email'
+                placeholder='Введите email...'
                 value={registrationData.email}
-                onChange={handleInputChange} />
-            {errors.email && <span>{errors.email}</span>}
+                onChange={(e) => handleDataChange(e, setRegistrationData)}
+                zodError={errors.email}
+            />
 
-            <label htmlFor='password'>Пароль</label>
-            <CustomInput
-                id='password'
+            <CustomFormField
+                title='Пароль'
+                fieldType='input'
                 name='password'
-                placeholder='Введите пароль'
                 value={registrationData.password}
-                onChange={handleInputChange} />
-            {errors.password && <span>{errors.password}</span>}
+                onChange={(e) => handleDataChange(e, setRegistrationData)}
+                placeholder='Введите пароль...'
+                zodError={errors.password}
+            />
 
             <CustomButton children='Создать аккаунт' />
             {isLoading && <div>Ожидание...</div>}

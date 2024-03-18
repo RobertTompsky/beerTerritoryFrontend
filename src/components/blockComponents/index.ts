@@ -1,3 +1,5 @@
+export { BeersListBlock } from "./BeersListBlock/BeersListBlock";
+
 export { ProfileInfoBlock } from "./ProfileInfoBlock/ProfileInfoBlock";
 
 export { SearchBlock } from "./SearchBlock/SearchBlock";

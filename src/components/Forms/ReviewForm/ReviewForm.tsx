@@ -1,19 +1,23 @@
 import {
     CustomButton,
     CustomForm,
-    CustomInput,
-    CustomSelect
+    CustomFormField
 } from '@/components/custom';
-import { useAppSelector } from '@/hooks/reduxHooks';
+import { useAppSelector } from '@/lib/hooks/reduxHooks';
 import { RATING_OPTIONS } from '@/lib/data';
-import { handleZodErrors, handleServerErrors } from '@/lib/utils/functions';
+import {
+    handleZodErrors,
+    handleServerErrors,
+    handleDataChange,
+    handleValidateData
+} from '@/lib/utils/functions';
 import { reviewSchema } from '@/lib/zodSchemas';
 import {
     useAddReviewMutation,
     useDeleteReviewMutation,
     useGetBeerReviewsQuery
 } from '@/services/endpoints/beers/reviewsEndpoints';
-import { ReviewBody } from '@/types/reviewTypes';
+import { ReviewBody } from '@/lib/types/reviewTypes';
 import React, { useState } from 'react';
 
 
@@ -25,7 +29,7 @@ interface ReviewFormProps {
 export const ReviewForm: React.FC<ReviewFormProps> = ({ beerId, setIsFormOpen }) => {
     const userId = useAppSelector((state) => state.auth.user?.id)
     const { data: reviews } = useGetBeerReviewsQuery(beerId as string)
-    const [addReview, {isLoading}] = useAddReviewMutation()
+    const [addReview, { isLoading }] = useAddReviewMutation()
     const [deleteReview] = useDeleteReviewMutation()
 
     const [review, setReview] = useState<ReviewBody & { beerId: string }>({
@@ -36,16 +40,11 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({ beerId, setIsFormOpen })
     })
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-    const handleInputChange: React.ChangeEventHandler<HTMLInputElement | HTMLSelectElement> = (e) => {
-        const { name, value } = e.target
-        const strOrNumValue = Number(value) || value;
-        setReview((prevData) => ({ ...prevData, [name]: strOrNumValue }))
-    }
-
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault()
         try {
-            reviewSchema.parse(review)
+            handleValidateData(reviewSchema, review)
+
             const existingUserReview = reviews?.find((review) => review.user.id === userId)
             if (existingUserReview) {
                 await deleteReview({
@@ -64,44 +63,53 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({ beerId, setIsFormOpen })
 
     return (
         <CustomForm title='Новый отзыв' onSubmit={handleSubmit}>
-            <label htmlFor='title'>Вердикт</label>
-            <CustomInput
-                id='title'
+            <CustomFormField
+                fieldType='input'
+                title='Вердикт'
                 name='title'
                 value={review.title}
-                onChange={handleInputChange}
+                onChange={(e) => handleDataChange(e, setReview)}
+                zodError={errors.title}
             />
-            {errors.title && <span>{errors.title}</span>}
 
-            <label htmlFor='body'>Подробное мнение</label>
-            <CustomInput
-                id='body'
+            <CustomFormField
+                fieldType='textarea'
+                title='Подробное мнение'
                 name='body'
                 value={review.body}
-                onChange={handleInputChange}
+                onChange={(e) => handleDataChange(e, setReview)}
+                zodError={errors.body}
             />
-            {errors.body && <span>{errors.body}</span>}
 
-            <label htmlFor='rating'>Оценка</label>
-            <CustomSelect
+            <CustomFormField
+                fieldType='select'
                 defaultOptionTitle='Выбрать оценку'
                 options={RATING_OPTIONS.map((option) => ({
                     title: option,
                     value: option
                 }))}
-                id='rating'
+                title='Оценка'
                 name='rating'
                 value={review.rating}
-                onChange={handleInputChange}
+                onChange={(e) => handleDataChange(e, setReview)}
+                zodError={errors.rating}
             />
-            {errors.rating && <span>{errors.rating}</span>}
 
             <CustomButton
                 children='Сохранить'
                 variant='approve'
             />
-            {isLoading && <div>Ожидание...</div>}
-            {errors.serverErr && <span>{errors.serverErr}</span>}
+            {isLoading &&
+                <div>
+                    Ожидание...
+                </div>
+            }
+            {errors.serverErr &&
+                <span>
+                    {errors.serverErr}
+                </span>
+            }
+
         </CustomForm>
     );
 };

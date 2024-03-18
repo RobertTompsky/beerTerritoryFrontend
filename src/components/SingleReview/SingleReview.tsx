@@ -1,16 +1,14 @@
-import { Review } from '@/types/reviewTypes';
+import { Review } from '@/lib/types/reviewTypes';
 import React from 'react';
 import styles from './SingleReview.module.scss'
 import { useDeleteReviewMutation } from '@/services/endpoints/beers/reviewsEndpoints';
-import { useAppSelector } from '@/hooks/reduxHooks';
+import { useAppSelector } from '@/lib/hooks/reduxHooks';
 import DefaultAvatar from '@/assets/default_avatar.jpg'
 import { useNavigate } from 'react-router-dom';
 import { RoutePath } from '@/lib/config/routeConfig';
 import { formatData } from '@/lib/utils/helpers';
 import { CustomButton } from '../custom';
-import FilledCircle from '@/assets/filledCircle.png';
-import EmptyCircle from '@/assets/emptyCircle.png';
-import { RATING_OPTIONS } from '@/lib/data';
+import { Rating } from '..';
 
 interface SingleReviewProps {
     review: Review | undefined,
@@ -66,20 +64,7 @@ export const SingleReview: React.FC<SingleReviewProps> = ({ review, beerId }) =>
                 <h3>{review?.title}</h3>
                 <p>{review?.body}</p>
                 <div className={styles.review_content_bottom}>
-                    <div className={styles.review_content_bottom_rating}>
-                        {RATING_OPTIONS.map((_, index) => (
-                            <img
-                                key={index}
-                                src={
-                                    review && index < review?.rating
-                                        ? FilledCircle
-                                        : EmptyCircle
-                                }
-                                width={20}
-                                height={20}
-                            />
-                        ))}
-                    </div>
+                    <Rating review={review}/>
                     {isUserReview &&
                         <div className={styles.review_content_btnGroup}>
                             <CustomButton

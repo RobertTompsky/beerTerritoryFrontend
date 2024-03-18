@@ -5,6 +5,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
+      // альяс для абсолютных путей
       '@': '/src',
     },
   },

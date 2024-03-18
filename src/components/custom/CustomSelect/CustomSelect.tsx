@@ -1,13 +1,11 @@
 import React from 'react';
 import styles from './CustomSelect.module.scss'
 
-interface OptionProps {
-    value: string | number,
-    title: string | number
-}
-
-interface CustomSelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
-    options: OptionProps[],
+export interface CustomSelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+    options: {
+        value: string | number,
+        title: string | number
+    }[],
     defaultOptionTitle: string
 }
 

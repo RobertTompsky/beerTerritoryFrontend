@@ -1,5 +1,5 @@
-import { UserLoginData, UserRegistrationData, UserWithToken } from "@/types/userTypes";
-import { api } from "../api";
+import { UserLoginData, UserRegistrationData, UserWithToken } from "@/lib/types/userTypes";
+import { api } from "@/services/api";
 
 export const authApi = api.injectEndpoints({
     endpoints: (builder) => ({

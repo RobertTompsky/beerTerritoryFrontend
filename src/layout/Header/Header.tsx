@@ -1,18 +1,22 @@
-import { Container } from '../../components';
 import styles from './Header.module.scss'
 import { Link } from 'react-router-dom';
 import ProfileIcon from '@/assets/profileIcon.svg'
-import React, { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
+import React, { useRef, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/reduxHooks';
 import { RoutePath } from '@/lib/config/routeConfig';
-import { logOut } from '@/features/authSlice';
+import { logOut } from '@/lib/features/authSlice';
 import { CustomButton } from '@/components/custom';
 import LittleProfileIcon from '@/assets/profileLittleIcon.svg'
+import { Container } from '..';
+import { useClickOutside } from '@/lib/hooks/useClickOutside';
+import { persistor } from '@/app/store';
 
 export const Header: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
     const dispatch = useAppDispatch()
     const me = useAppSelector((state) => state.auth.user)
+    const dropdownRef = useRef<HTMLDivElement>(null);
+    useClickOutside(dropdownRef, () => setIsMenuOpen(false))
 
     return (
         <div className={styles.header}>
@@ -49,7 +53,7 @@ export const Header: React.FC = () => {
                         </div>
 
                         {isMenuOpen &&
-                            <div className={styles.header_dropdown}>
+                            <div className={styles.header_dropdown} ref={dropdownRef}>
                                 <Link
                                     to={`${RoutePath.profile}/${me?.id}`}
                                     onClick={() => setIsMenuOpen(false)}
@@ -60,7 +64,8 @@ export const Header: React.FC = () => {
                                 <CustomButton
                                     children='Выйти'
                                     variant='delete'
-                                    onClick={() => {
+                                    onClick={async () => {
+                                        await persistor.purge();
                                         dispatch(logOut())
                                         setIsMenuOpen(false)
                                     }}

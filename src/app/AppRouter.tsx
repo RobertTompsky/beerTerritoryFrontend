@@ -1,10 +1,10 @@
+import { RoutePath, RouteConfig } from '@/lib/config/routeConfig';
+import { useAppSelector } from '@/lib/hooks/reduxHooks';
+import { SignInPage, SignUpPage } from '@/pages';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { RouteConfig, RoutePath } from '../lib/config/routeConfig';
-import { SignInPage, SignUpPage } from '../pages';
-import { useAppSelector } from '../hooks/reduxHooks';
 
 export const AppRouter = () => {
-    const isAuthed = useAppSelector((state) => state.auth.isAuthenticated)
+    const isAuthed: boolean = useAppSelector((state) => state.auth.isAuthenticated)
 
     return (
         <Routes>

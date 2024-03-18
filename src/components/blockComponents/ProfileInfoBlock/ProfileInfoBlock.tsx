@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { EditProfileForm } from '../../Forms/EditProfileForm/EditProfileForm';
 import { ProfileInfo } from '../../ProfileInfo/ProfileInfo';
-import { UserWithProfile } from '@/types/userTypes';
+import { UserWithProfile } from '@/lib/types/userTypes';
 import styles from './ProfileInfoBlock.module.scss'
 
 interface ProfileInfoBlockProps {

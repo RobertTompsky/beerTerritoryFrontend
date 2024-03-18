@@ -1,17 +1,18 @@
 import React from 'react';
 import { CustomButton } from '../custom';
-import { QueryType } from '@/types/otherTypes';
+import { QueryType } from '@/lib/types/otherTypes';
 import styles from './Pagination.module.scss'
 import { useGetBeersQuery } from '@/services/endpoints/beers/beerListEndpoints';
-import { Beer } from '@/types/beerTypes';
+import { Beer } from '@/lib/types/beerTypes';
 
 interface PaginationProps {
     query: QueryType
     setQuery: React.Dispatch<React.SetStateAction<QueryType>>
+    beers: Beer[] | undefined
 }
 
-export const Pagination: React.FC<PaginationProps> = ({ query, setQuery }) => {
-    const {data: totalBeers} = useGetBeersQuery({
+export const Pagination: React.FC<PaginationProps> = ({ query, setQuery, beers }) => {
+    const { data: totalBeers } = useGetBeersQuery({
         type: '',
         sort: ''
     }) as { data: Beer[] }
@@ -39,8 +40,12 @@ export const Pagination: React.FC<PaginationProps> = ({ query, setQuery }) => {
                 children='Вперед'
                 onClick={() => handlePageChange('next')}
                 disabled={
-                    (query.page && query.per_page &&  
-                    query.page === Math.ceil(totalBeers?.length / query.per_page)) as boolean
+                    (
+                        beers &&
+                        query.page &&
+                        query.per_page &&
+                        beers?.length < query.per_page
+                    ) as boolean
                 }
             />
         </div>
